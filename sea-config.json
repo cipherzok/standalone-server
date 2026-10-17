@@ -1,0 +1,7 @@
+{
+  "main": "server.js",
+  "useCodeCache": false,
+  "useSnapshot": false,
+  "disableExperimentalSEAWarning": true,
+  "output": "sea"
+}

@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  windows-x64:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26.12.0
+      - run: node --build-sea sea-config.json
+      - run: ren sea windows-x64-local-server.exe
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: windows-x64-local-server.exe
+  linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26.12.0
+      - run: node --build-sea sea-config.json
+      - run: mv sea linux-x64-local-server
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: linux-x64-local-server
+  macos-x64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26.12.0
+      - run: node --build-sea sea-config.json
+      - run: mv sea macos-x64-local-server
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: macos-x64-local-server
