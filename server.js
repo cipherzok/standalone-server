@@ -36,16 +36,15 @@ function generateModsList() {
                 mods.push(entry.name);
             }
         }
-
-        console.log(`Found ${mods.length} mod(s)`);
-
-        fs.writeFileSync(
-            path.join(setupPath, "mods.json"),
-            JSON.stringify(mods, null, 4)
-        );
     } else {
         console.log(`Cannot find ${modsPath}`);
     }
+    console.log(`Found ${mods.length} mod(s)`);
+    
+    fs.writeFileSync(
+        path.join(setupPath, "mods.json"),
+        JSON.stringify(mods, null, 4)
+    );
 }
 
 function serve(req, res) {
