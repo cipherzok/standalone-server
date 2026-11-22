@@ -5,7 +5,7 @@ const { isSea } = require("node:sea");
 const { spawn } = require("node:child_process");
 const process = require("node:process");
 
-const port = 5050;
+const port = 5500;
 
 const setupPath = isSea() ? path.dirname(process.execPath) : path.join(process.cwd(), "melonbrick");
 
@@ -29,19 +29,23 @@ function generateModsList() {
     const modsPath = path.join(setupPath, "mods");
     const mods = [];
 
-    for (const entry of fs.readdirSync(modsPath, { withFileTypes: true })) {
-        if (entry.isDirectory()) {
-            console.log("Mod found: " + entry.name);
-            mods.push(entry.name);
+    if (fs.existsSync(modsPath)) {
+        for (const entry of fs.readdirSync(modsPath, { withFileTypes: true })) {
+            if (entry.isDirectory()) {
+                console.log("Mod found: " + entry.name);
+                mods.push(entry.name);
+            }
         }
+
+        console.log(`Found ${mods.length} mod(s)`);
+
+        fs.writeFileSync(
+            path.join(setupPath, "mods.json"),
+            JSON.stringify(mods, null, 4)
+        );
+    } else {
+        console.log(`Cannot find ${modsPath}`);
     }
-
-    console.log(`Found ${mods.length} mod(s)`);
-
-    fs.writeFileSync(
-        path.join(setupPath, "mods.json"),
-        JSON.stringify(mods, null, 4)
-    );
 }
 
 function serve(req, res) {
